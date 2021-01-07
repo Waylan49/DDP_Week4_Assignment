@@ -20,15 +20,29 @@ shinyUI(navbarPage(
                            tags$a(href="https://rdrr.io/github/quantide/qdata/man/pimaindiansdiabetes2.html", "RDocumention_Link")
                        ),
                        mainPanel(
-                           plotOutput("boxplot"),
+                           h3(textOutput("text0")),
+                           plotlyOutput("boxplot", width = 800, height = 700),
                            h5("Predicotr Explanation: "),
                            textOutput("text1")
                        )
                    )
 
                ),
+               
                tabPanel(
-                   title="dot plot"
+                   title="Correlation Plot",
+                   sidebarLayout(
+                       sidebarPanel(
+                   selectInput(inputId = "corrtype", label = "Select the correlation plot:", 
+                               choices = c("Correlogram", "Corr_matrix_plot")),
+                       ),
+                   mainPanel(
+                   title="Correlation Plot",
+                   plotOutput("corrplot", width=1000, height=700),
+                   verbatimTextOutput("text2")
+                   ),
+             
+               )
                )
     ),
 
