@@ -3,24 +3,32 @@ library(ggplot2)
 library(corrplot)
 library(plotly)
 library(PerformanceAnalytics)
+library(DT)
+library(caret)
 
-data("PimaIndiansDiabetes2", package = "mlbench")
-PimaIndiansDiabetes2 <- na.omit(PimaIndiansDiabetes2)
-data<-PimaIndiansDiabetes2
+
 
 shinyServer(function(input, output) {
+
+  data("PimaIndiansDiabetes2", package = "mlbench")
+  PimaIndiansDiabetes2 <- na.omit(PimaIndiansDiabetes2)
+  data<-PimaIndiansDiabetes2
+  inTrain<-createDataPartition(data$diabetes, p=0.8, list=FALSE)
+  training<-data[inTrain,]
+  testing<-data[-inTrain,]
+
 
   output$boxplot<-renderPlotly({
       predictor<-input$predictor
       fill<-c("#00FFA8", "#E30671")
       formula<-as.formula(paste("~ ", predictor, sep=""))
       title<-paste("Boxplot of ", predictor, " ~ diabetes", sep="")
-      p<-plot_ly(data, y=formula, color=~diabetes, type="box", colors=fill)%>% 
+      p<-plot_ly(data, y=formula, color=~diabetes, type="box", colors=fill)%>%
         layout(xaxis = list(title = 'Diagnosis Result'), yaxis = list(title = predictor)) %>%
         layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
               yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
   })
-  
+
   output$text0<-renderText({
     predictor<-input$predictor
     paste("Boxplot of ", predictor, "~ diabetes", sep="")
@@ -48,11 +56,11 @@ shinyServer(function(input, output) {
           "class variable: diabetic or not (factor with 2 levels: neg and pos);"
       }
   })
-  
+
   output$corrplot<-renderPlot({
     data1<-data
     data1$diabetes<-as.numeric(data1$diabetes)
-    if(input$corrtype == "Correlogram"){
+    if(input$corrtype == "Option1"){
     res<-cor(data1)
     corrplot(res, type="upper", order="hclust", tl.col = "black", tl.srt = 45,
              tl.cex=1.5)
@@ -60,16 +68,42 @@ shinyServer(function(input, output) {
     chart.Correlation(data1, histogram = TRUE, pch=19)
   }
   })
-  
+
   output$text2<-renderPrint({
-    if(input$corrtype == "Correlogram"){
-      "A graphical display of a correlation matrix, highlighting the most correlated variables in a data table. In this plot, correlation coefficients are colored according to the value."
+    if(input$corrtype == "Option1"){
+      "The correlation plot is created by function corrplot()"
     }else{
-      "a chart of a correlation matrix."
+      "The correlation plot is created by function chart.Correlation() with argument histogram=TRUE"
     }
   })
 
+  output$dt<-renderDataTable({
+    datatable(data, options = list(pageLength=20))
+  })
 
+  output$training<-renderDataTable({
+    datatable(training, options = list(pageLength=20))
+  })
+
+  output$testing<-renderDataTable({
+    datatable(testing, options = list(pageLength=20))
+  })
+
+
+  model_logistic<-glm( diabetes ~., data = training, family = binomial)
+
+  output$logistic<-renderPrint({
+    summary(model_logistic)
+  })
+
+  output$pred1<-renderPrint({
+    pred<-predict(model_logistic, testing)
+    ifelse(pred>0.5, "pos", "neg")
+  })
+
+  output$test<-renderText({
+    input$variable
+  })
 
 
 

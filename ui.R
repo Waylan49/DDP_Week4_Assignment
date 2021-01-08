@@ -1,5 +1,11 @@
 library(shiny)
 library(ggplot2)
+library(corrplot)
+library(plotly)
+library(PerformanceAnalytics)
+library(DT)
+library(caret)
+
 
 data("PimaIndiansDiabetes2", package = "mlbench")
 PimaIndiansDiabetes2 <- na.omit(PimaIndiansDiabetes2)
@@ -28,31 +34,80 @@ shinyUI(navbarPage(
                    )
 
                ),
-               
+
                tabPanel(
                    title="Correlation Plot",
                    sidebarLayout(
                        sidebarPanel(
-                   selectInput(inputId = "corrtype", label = "Select the correlation plot:", 
-                               choices = c("Correlogram", "Corr_matrix_plot")),
+                   selectInput(inputId = "corrtype", label = "Select the correlation plot:",
+                               choices = c("Option1", "Option2")),
                        ),
                    mainPanel(
                    title="Correlation Plot",
+                   verbatimTextOutput("text2"),
                    plotOutput("corrplot", width=1000, height=700),
-                   verbatimTextOutput("text2")
                    ),
-             
+
                )
                )
     ),
 
 
-    tabPanel(
-        "World"
+    navbarMenu(
+        title="Prediction Method",
+        tabPanel(
+            title="Logistic Regression",
+            column(width = 4,
+                   wellPanel(
+                       h3("Using all variables to construct the logistic regression model"),
+                       tags$code("model_logistic<-glm( diabetes ~., data = training, family = binomial)"),
+                       br(),
+                       tags$code("summary(model_logistic)"),
+                       br(),
+                       br(),
+                       verbatimTextOutput("logistic")
+                   )
+                   ),
+            column(width = 8,
+                 checkboxGroupInput(inputId = "variable", label = "Predictors you want to include in your model",
+                                    choices = c("pregnant", "glucose", "pressure", "triceps", "insulin",
+                                                "mass", "pedigree", "age")),
+                 verbatimTextOutput("test")
+
+                   )
+
+        ),
+        tabPanel(
+            title="Random Forest",
+
+        )
     ),
 
 
-    tabPanel(
-        "!"
-    )
+    navbarMenu(
+            title="Data",
+            tabPanel(
+                title="Complete Raw Data",
+                dataTableOutput("dt")
+            ),
+            tabPanel(
+                title="Training Data (80%)",
+                dataTableOutput("training")
+            ),
+            tabPanel(
+                title="Testing Data (20%)",
+                dataTableOutput("testing")
+            )
+
+        )
+
     ))
+
+
+
+
+
+
+
+
+
