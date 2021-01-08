@@ -13,8 +13,32 @@ data<-PimaIndiansDiabetes2
 
 shinyUI(navbarPage(
     title="Data Analysis - Diabetes",
+    
+    tabPanel(
+      title="Introduction",
 
-    navbarMenu(title="Exploratory Analysis",
+      h3("In this shiny application, you can perform some simple exploratory data analysis, and make your own logistic regression 
+             model with dataset PimaIndiansDiabetes2.", font.size=4),
+      tags$hr(),
+      h4("In  section", tags$strong("Data Exploratory Analysis"), ", you can play around with boxplot, dotplot 
+         and correlation plot to explore the data in order to understand how the data looks like."),
+      br(),
+      h4("In section", tags$strong("Logistic Regression"), "you can select the predictors to include in your construction of logistic regression model"),
+      h4("It also feedbacks you the summary result of the model you construct, residual plot analysis, and confusion matrix to get accuracy of your model"),
+      br(),
+      h4("In section", tags$strong("Data"), "you can review the data table we used in this shiny application"),
+      h4("It has three sub-sections, one is the whole data, the second is the training data we used to build our logistic regression model, and the third is the testing data we use to test the accuracy of our prediction model."),
+      tags$hr(),
+      h5("Plot Examples you'll see in section", tags$strong("Data Exploratory Analysis")),
+      fluidRow(
+          column(width=4, tags$image(src="p1.png", height=500, width=500)),
+          column(width=4, tags$image(src="p2.png", height=500, width=500)),
+          column(width=4, tags$image(src="p3.png", height=500, width=500))
+      )
+      
+    ),
+
+    navbarMenu(title="Data Exploratory Analysis",
                tabPanel(
                    title="Boxplot",
                    sidebarLayout(
@@ -68,7 +92,8 @@ shinyUI(navbarPage(
                    )
                )
     ),
-
+    navbarMenu(
+        title="Prediction",
         tabPanel(
             title="Logistic Regression",
             column(width = 4,
@@ -98,6 +123,38 @@ shinyUI(navbarPage(
                  ),
                    )
 
+        ),
+        tabPanel(
+         title="Predict",
+         sidebarLayout(
+             sidebarPanel(
+                 checkboxInput(inputId = "var1", label = "pregnant", value = TRUE),
+                 checkboxInput(inputId = "var2", label = "glucose", value = TRUE),
+                 checkboxInput(inputId = "var3", label = "pressure", value = TRUE),
+                 checkboxInput(inputId = "var4", label = "triceps", value = TRUE),
+                 checkboxInput(inputId = "var5", label = "insulin", value = TRUE),
+                 checkboxInput(inputId = "var6", label = "mass", value = TRUE),
+                 checkboxInput(inputId = "var7", label = "pedigree", value = TRUE),
+                 checkboxInput(inputId = "var8", label = "age", value = TRUE),
+                 hr(),
+                 uiOutput("numeric1"),
+                 uiOutput("slider2"),
+                 uiOutput("slider3"),
+                 uiOutput("slider4"),
+                 uiOutput("slider5"),
+                 uiOutput("slider6"),
+                 uiOutput("slider7"),
+                 uiOutput("slider8"),
+             ),
+             mainPanel(
+                 h4("In this section, you can make your own prediction by the logistic regression model."),
+                 h4("By selecting the predictors you want to include in your model, you can also input the numeric value for that predictors."),
+                 h4("The constructed logistic regression model will make the prediction based on the predictors you select and the numeric input you give to it"),
+                 verbatimTextOutput("text3"),
+                 verbatimTextOutput("pred_final")
+             )
+         )
+        )
         ),
 
 

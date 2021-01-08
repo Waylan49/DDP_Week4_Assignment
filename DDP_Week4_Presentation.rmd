@@ -1,0 +1,52 @@
+---
+title: "myApp Presentation"
+author: "Weilun"
+date: "1/8/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction - Three sections
+
+Diabetes mellitus (DM), commonly known as diabetes, is a group of metabolic disorders characterized by a high blood sugar level over a prolonged period of time.
+
+In this shiny application with data "PimaIndiansDiabetes2", you can perform  simple exploratory data analysis with it and also construct your own logistic regression model in order to make predictions. 
+This app allows users to manipulate the data and perform analysis without having any knowledge of R language. 
+
+This app includes three sections.\   
+1. Data Exploratory Analysis  
+2. Logistic Regression  
+3. Data  
+
+## Section 1: Data Exploratory Analysis
+
+In this section, users can play around with three different types of plot. 
+
+- Box_plot 
+Users can select the predictor they are interested in to explore the relationship the predictor has with the result of diabetes diagnosis.
+- Correlation Plot 
+Users can review 2 types of correlation plot, option1 is constructed with r function "corrplot", option2 is with r function "chart.Correlation".
+- Dot_plot 
+Users can select two variables to construct the dot plot in order to explore the relationship between two selected variable. 
+
+## Boxplot Example
+Below box plot is an example users will see in section **Data Exploratory Analysis**
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(plotly)
+data("PimaIndiansDiabetes2", package = "mlbench")
+PimaIndiansDiabetes2 <- na.omit(PimaIndiansDiabetes2)
+data<-PimaIndiansDiabetes2
+plot_ly(data=data, x=~diabetes, y=~glucose, type="box", color=~diabetes)
+
+```
+
+## Section 2&3: Logistic Regression and Data
+In section **logistic regression**, we split the whole data into training data (80%) and testing data (20%).  \
+Users first will see a summary result of logistic regression model constructed by all predictors. Then users can then determine which predictors to include based on the summary result to construct their own logistic regression model.  \
+Furthermore, users can use their own model to make prediction by inputting the numeric value of each predictors they select. 
+
+In section **Data**, users can review the data we used in this shiny app. 
