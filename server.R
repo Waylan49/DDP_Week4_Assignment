@@ -102,7 +102,42 @@ shinyServer(function(input, output) {
   })
 
   output$test<-renderText({
-    input$variable
+    var1<-paste(input$variable, collapse = "+")
+    paste("daibetes~", var1, sep="")
+  })
+  
+  model_logistic1<-reactive({
+    var<-input$variable
+    var1<-paste(var, collapse = "+")
+    formula1<-as.formula(paste("diabetes~", var1, sep=""))
+    glm(formula1, data = training, family = "binomial")
+  })
+  
+  output$logistic1<-renderPrint({
+    summary(model_logistic1())
+  })
+  
+  output$pred<-renderPrint({
+    pred_logistic1<-predict(model_logistic1(), testing)
+    pred_logistic1_class<-as.factor(ifelse(pred_logistic1>0.5, "pos", "neg"))
+    confusionMatrix(testing$diabetes, pred_logistic1_class)
+  })
+  
+  output$resid<-renderPlot({
+    par(mfrow=c(2,2))
+    plot(model_logistic1())
+  })
+  
+  output$dotplot<-renderPlotly({
+    xvar<-input$xvar
+    yvar<-input$yvar
+    formu1<-as.formula(paste("~", xvar, sep=""))
+    formu2<-as.formula(paste("~", yvar, sep=""))
+    fill<-c("#00FFA8", "#E30671")
+    plot_ly(data=data, x=formu1, y=formu2, type="scatter", color=~diabetes,
+            colors=fill) %>% layout(xaxis = list(title = xvar), yaxis = list(title = yvar)) %>%
+      layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
+                                    yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))
   })
 
 
