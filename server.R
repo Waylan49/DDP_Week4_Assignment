@@ -5,6 +5,7 @@ library(plotly)
 library(PerformanceAnalytics)
 library(DT)
 library(caret)
+library(mlbench)
 
 
 
@@ -134,7 +135,7 @@ shinyServer(function(input, output) {
     formu1<-as.formula(paste("~", xvar, sep=""))
     formu2<-as.formula(paste("~", yvar, sep=""))
     fill<-c("#00FFA8", "#E30671")
-    plot_ly(data=data, x=formu1, y=formu2, type="scatter", color=~diabetes,
+    plot_ly(data=data, x=formu1, y=formu2, type="scatter", mode="markers", color=~diabetes,
             colors=fill) %>% layout(xaxis = list(title = xvar), yaxis = list(title = yvar)) %>%
       layout(xaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)),
                                     yaxis = list(titlefont = list(size = 22), tickfont = list(size = 22)))

@@ -11,8 +11,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction - Three sections
 
-Diabetes mellitus (DM), commonly known as diabetes, is a group of metabolic disorders characterized by a high blood sugar level over a prolonged period of time.
+Diabetes mellitus (DM), commonly known as diabetes, is a group of metabolic disorders characterized by a high blood sugar level over a prolonged period of time.  
 
+<a href="https://waylan49.shinyapps.io/myApp_Assignment4/">myApp</a>
 In this shiny application with data "PimaIndiansDiabetes2", you can perform  simple exploratory data analysis with it and also construct your own logistic regression model in order to make predictions. 
 This app allows users to manipulate the data and perform analysis without having any knowledge of R language. 
 

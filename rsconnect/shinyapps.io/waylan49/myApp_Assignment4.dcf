@@ -1,0 +1,12 @@
+name: myApp_Assignment4
+title: myApp_Assignment4
+username:
+account: waylan49
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3455394
+bundleId: 4074071
+url: https://waylan49.shinyapps.io/myApp_Assignment4/
+when: 1610145222.43253
+asMultiple: FALSE
+asStatic: FALSE

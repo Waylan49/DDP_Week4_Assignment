@@ -5,7 +5,7 @@ library(plotly)
 library(PerformanceAnalytics)
 library(DT)
 library(caret)
-
+library(mlbench)
 
 data("PimaIndiansDiabetes2", package = "mlbench")
 PimaIndiansDiabetes2 <- na.omit(PimaIndiansDiabetes2)
@@ -64,7 +64,7 @@ shinyUI(navbarPage(
                    title="Correlation Plot",
                    sidebarLayout(
                        sidebarPanel(
-                           tags$p("The data set PimaIndiansDiabetes2 used in this analysis contains contain information about diabetes of indian people."),
+                           tags$p("The data set PimaIndiansDiabetes2 used in this analysis contains information about diabetes of indian people."),
                    selectInput(inputId = "corrtype", label = "Select the correlation plot:",
                                choices = c("Option1", "Option2")),
                        ),
